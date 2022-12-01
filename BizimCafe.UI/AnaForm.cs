@@ -72,7 +72,6 @@ namespace BizimCafe.UI
             {
                 lvi.ImageKey = "bos";
             }
-
         }
 
         private void tsmiGecmisSiparisler_Click(object sender, EventArgs e)
