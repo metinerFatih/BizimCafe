@@ -157,6 +157,7 @@
             this.btnMasaTasi.TabIndex = 5;
             this.btnMasaTasi.Text = "TAŞI";
             this.btnMasaTasi.UseVisualStyleBackColor = false;
+            this.btnMasaTasi.Click += new System.EventHandler(this.btnMasaTasi_Click);
             // 
             // lblMasaNo
             // 

@@ -65,12 +65,25 @@ namespace BizimCafe.UI
             }
 
             var frmSiparis = new SiparisForm(db, siparis);
-            //frmSiparis.ShowDialog();
+            frmSiparis.MasaTasindi += FrmSiparis_MasaTasindi;
             DialogResult sonuc = frmSiparis.ShowDialog();
 
             if (sonuc == DialogResult.OK)
             {
                 lvi.ImageKey = "bos";
+            }
+        }
+
+        private void FrmSiparis_MasaTasindi(int eskiMasaNo, int yeniMasaNo)
+        {
+            foreach (ListViewItem item in lvwMasalar.Items)
+            {
+                int masaNo = (int)item.Tag;
+
+                if (masaNo == eskiMasaNo)
+                    item.ImageKey = "bos";
+                else if (masaNo == yeniMasaNo)
+                    item.ImageKey = "dolu";
             }
         }
 
@@ -88,6 +101,11 @@ namespace BizimCafe.UI
         {
             string json = JsonSerializer.Serialize(db);
             File.WriteAllText("veri.json", json);
+        }
+
+        private void AnaForm_DoubleClick(object sender, EventArgs e)
+        {
+
         }
     }
 }

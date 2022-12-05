@@ -13,6 +13,8 @@ namespace BizimCafe.UI
 {
     public partial class SiparisForm : Form
     {
+        public event MasaTasindiEventHandler MasaTasindi;
+
         private readonly KafeVeri _db;
         private readonly Siparis _siparis;
         public SiparisForm(KafeVeri db, Siparis siparis)
@@ -34,6 +36,19 @@ namespace BizimCafe.UI
             lblMasaNo.Text = _siparis.MasaNo.ToString("00");
             lblOdemeTutari.Text = _siparis.ToplamTutarTL;
             dGridSiparisGoster.DataSource = _siparis.SiparisDetaylar.ToList();
+            MasaNolariYukle();
+        }
+
+        private void MasaNolariYukle()
+        {
+            cbxMasaNo.Items.Clear();
+            for (int i = 1; i <= _db.MasaAdet; i++)
+            {
+                if (!_db.AktifSiparisler.Any(x => x.MasaNo == i))
+                {
+                    cbxMasaNo.Items.Add(i);
+                }
+            }
         }
 
         private void btnUrunEkle_Click(object sender, EventArgs e)
@@ -89,6 +104,19 @@ namespace BizimCafe.UI
             _db.GecmisSiparisler.Add(_siparis);
             DialogResult = DialogResult.OK;
             Close();
+        }
+        
+        private void btnMasaTasi_Click(object sender, EventArgs e)
+        {
+            if (cbxMasaNo.SelectedIndex < 0) return;
+
+            int eskiMasaNo = _siparis.MasaNo;
+            int hedefNo = (int)cbxMasaNo.SelectedItem;
+            _siparis.MasaNo = hedefNo;
+            BilgileriGuncelle();
+
+            if (MasaTasindi != null)
+                MasaTasindi(eskiMasaNo, hedefNo);
         }
     }
 }
